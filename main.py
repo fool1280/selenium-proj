@@ -34,4 +34,4 @@ if any(error_message in e.text for e in errors):
 else:
     print("[+] Login successful")
 
-driver.close()
+driver.quit()
