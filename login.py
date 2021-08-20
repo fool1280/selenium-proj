@@ -1,12 +1,10 @@
 import os
-import time
 from dotenv import load_dotenv
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from fake_useragent import UserAgent
 
 load_dotenv()
 DEBUG = os.getenv('DEBUG')
@@ -17,9 +15,6 @@ PASSWORD = os.getenv('PASSWORD')
 chrome_options = webdriver.ChromeOptions()
 if DEBUG == 'TRUE':
     chrome_options.add_argument("--incognito")
-ua = UserAgent()
-userAgent = ua.random
-chrome_options.add_argument(f'user-agent={userAgent}')
 driver = webdriver.Chrome(options=chrome_options)
 driver.get(URL)
 
@@ -32,15 +27,12 @@ driver.find_element_by_id("login-submit").click()
 WebDriverWait(driver=driver, timeout=50).until(
     lambda x: x.execute_script("return document.readyState === 'complete'")
 )
-# error = WebDriverWait(driver=driver, timeout=50).until(EC.presence_of_element_located(
-#    (By.XPATH, "//span[contains(text(), 'Incorrect email address')]")))
+error = WebDriverWait(driver=driver, timeout=50).until(EC.presence_of_element_located(
+    (By.XPATH, "//span[contains(text(), 'Incorrect email address')]")))
 
 # error = driver.find_element_by_xpath(
 #    "//span[contains(text(), 'Incorrect email address')]")
 
-# print(error.text)
+print(error.text)
 
-# agent = driver.execute_script("return navigator.userAgent")
-
-driver.close()
 driver.quit()
